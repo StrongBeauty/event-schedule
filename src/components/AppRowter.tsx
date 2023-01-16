@@ -5,7 +5,7 @@ import {useTypedSelector} from "../hooks/useTypedSelector";
 
 export const AppRouter: FC = () => {
     const isAuth = useTypedSelector(state => state.auth.isAuth)
-console.log(typeof(isAuth))
+
     const routesMap = (routes: RouteType[] ) => {
         return routes.map(route =>
                 <Route key={route.path}

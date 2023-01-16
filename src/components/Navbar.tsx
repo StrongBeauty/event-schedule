@@ -1,9 +1,11 @@
 import React, {FC} from "react";
 import {Layout, Menu, Row} from "antd";
 import {useTypedSelector} from "../hooks/useTypedSelector";
+import {useActions} from "../hooks/useActions";
 
 export const Navbar: FC = () => {
-    const isAuth = useTypedSelector(state => state.auth.isAuth)
+    const {isAuth, user} = useTypedSelector(state => state.auth);
+    const {logOut} = useActions()
 
     return (
         <Layout.Header>
@@ -12,13 +14,13 @@ export const Navbar: FC = () => {
                     ?
                     <>
                         <div style={{color: 'white'}}>
-                            name
+                            {user.login}
                         </div>
                         <Menu theme='dark'
                               mode="horizontal"
                               selectable={false}>
                             <Menu.Item key={1}
-                                       onClick={() => console.log('logout')}>
+                                    onClick={logOut}>
                                 Logout
                             </Menu.Item>
                         </Menu>

@@ -1,6 +1,6 @@
 import React, {FC} from "react";
 import './Login.css';
-import {Layout, Row} from "antd";
+import {Card, Layout, Row} from "antd";
 import {LoginForm} from "../components/LoginForm";
 
 export const Login: FC = () => {
@@ -10,7 +10,9 @@ export const Login: FC = () => {
                  align='middle'
                  className='pageBlock'
             >
-                <LoginForm />
+                <Card>
+                    <LoginForm/>
+                </Card>
             </Row>
         </Layout>
     )

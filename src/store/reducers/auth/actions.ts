@@ -43,7 +43,6 @@ export const AuthActionsCreators = {
             setTimeout(async () => {
                 const response = await axios.get<UserType[]>('./mock/users.json')
                 const mockUser = response.data.find(u => u.login === login && u.password === password)
-                console.log(mockUser)
                 if (mockUser) {
                     localStorage.setItem('auth', 'true');
                     localStorage.setItem('login', mockUser.login);

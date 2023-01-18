@@ -1,6 +1,7 @@
 import {Badge, Calendar} from "antd";
 import {FC} from "react";
 import {EventType} from "../store/reducers/event/actions";
+import {Dayjs} from "dayjs";
 
 type EventCalendarPropsType = {
     events: EventType[]
@@ -8,9 +9,8 @@ type EventCalendarPropsType = {
 
 export const EventCalendar: FC<EventCalendarPropsType> = ({events}) => {
 
-    function dateCellRender (val: any) {
-        const value = `${val.date}.${val.month}.${val.year}`
-        const currentDayEvents = events.filter(e => e.date === value)
+    function dateCellRender (value: Dayjs) {
+        const currentDayEvents = events.filter(e => e.date === value.date().toString())
         return (
             <ul className='events'>
                 {currentDayEvents.map((e, index) => (

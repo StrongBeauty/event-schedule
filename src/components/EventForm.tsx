@@ -3,6 +3,7 @@ import {Button, DatePicker, Form, Input, Row, Select} from "antd";
 import {rules} from "../utils/rules";
 import {UserType} from "../store/reducers/auth/actions";
 import {EventType} from "../store/reducers/event/actions";
+import {Dayjs} from "dayjs";
 
 type EventFormPropsType = {
     guests: UserType[],
@@ -18,13 +19,12 @@ export const EventForm: FC<EventFormPropsType> = ({guests, submit}) => {
         guest: '',
     } as EventType)
 
-    const selectDate = (date: any) => {
-
-        setNewEvent({...newEvent, date: date})
+    const selectDate = (value: Dayjs) => {
+        setNewEvent({...newEvent, date: value.date().toString()})
     }
 
     return (
-        <Form onFinish={(event: EventType) => submit(event)}>
+        <Form onFinish={(newEvent: EventType) => submit(newEvent)}>
             <Form.Item label='Event description'
                        name='description'
                        rules={[rules.required()]}
@@ -38,7 +38,7 @@ export const EventForm: FC<EventFormPropsType> = ({guests, submit}) => {
                        rules={[rules.required()]}
             >
                 <DatePicker
-                    onChange={(date) => date ? selectDate(`${date.date}.${date.month}.${date.year}`) : null}
+                    onChange={(value) => value? selectDate(value) : null}
                 />
             </Form.Item>
             <Form.Item label='Choose a guest'

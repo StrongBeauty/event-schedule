@@ -20,6 +20,6 @@ export default function authReducer (state = initialState, action: ActionsType):
      case "SET_ERROR":
          return {...state, error: action.payload, isLoading: false}
      default:
-         return initialState;
+         return state;
  }
 }

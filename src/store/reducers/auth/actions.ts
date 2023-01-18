@@ -33,10 +33,10 @@ export type ActionsType =
     SetErrorAction
 
 export const AuthActionsCreators = {
-    setUser: (user: UserType): SetUserAction => ({type: "SET_USER", payload: user}),
-    setIsAuth: (auth: boolean): SetAuthAction => ({type: "SET_AUTH", payload: auth}),
-    setIsLoading: (isLoading: boolean): SetIsLoadingAction => ({type: "SET_IS_LOADING", payload: isLoading}),
-    setError: (error: string): SetErrorAction => ({type: "SET_ERROR", payload: error}),
+    setUser: (payload: UserType): SetUserAction => ({type: "SET_USER", payload}),
+    setIsAuth: (payload: boolean): SetAuthAction => ({type: "SET_AUTH", payload}),
+    setIsLoading: (payload: boolean): SetIsLoadingAction => ({type: "SET_IS_LOADING", payload}),
+    setError: (payload: string): SetErrorAction => ({type: "SET_ERROR", payload}),
     logIn: (login: string, password: string) => async (dispatch: AppDispatch) => {
         try {
             dispatch(AuthActionsCreators.setIsLoading(true))
@@ -46,8 +46,8 @@ export const AuthActionsCreators = {
                 if (mockUser) {
                     localStorage.setItem('auth', 'true');
                     localStorage.setItem('login', mockUser.login);
-                    dispatch(AuthActionsCreators.setIsAuth(true));
                     dispatch(AuthActionsCreators.setUser(mockUser));
+                    dispatch(AuthActionsCreators.setIsAuth(true));
                 } else {
                     dispatch(AuthActionsCreators.setError('Wrong login or password!'))
                 }

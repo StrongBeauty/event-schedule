@@ -1,7 +1,13 @@
 import {UserType} from "../auth/actions";
-import {EventType} from "@testing-library/react";
 import {AppDispatch} from "../../index";
 import axios from "axios";
+
+export type EventType = {
+    author: string;
+    guest: string;
+    date: string;
+    description: string;
+}
 
 type SetGuestsType = {
     type: 'SET_GUESTS',
@@ -18,14 +24,32 @@ export type ActionsType =
     SetEventsType
 
 export const EventActionCreators = {
-    setGuests: (guests: UserType[]): SetGuestsType => ({type: 'SET_GUESTS', payload: guests}),
-    setEvents: (events: EventType[]): SetEventsType => ({type: 'SET_EVENTS', payload: events}),
+    setGuests: (payload: UserType[]): SetGuestsType => ({type: 'SET_GUESTS', payload}),
+    setEvents: (payload: EventType[]): SetEventsType => ({type: 'SET_EVENTS', payload}),
     fetchGuests: () => async (dispatch: AppDispatch) => {
         try {
             const response = await axios.get<UserType[]>('./mock/users.json')
             dispatch(EventActionCreators.setGuests(response.data))
         } catch (err) {
-            console.log(err)
         }
-    }
+    },
+    createEvent: (payload: EventType) => async (dispatch: AppDispatch)=> {
+        try {
+            const events = localStorage.getItem('events') || '[]'
+            const json = JSON.parse(events) as EventType[]
+            json.push(payload)
+            dispatch(EventActionCreators.setEvents(json))
+            localStorage.setItem('events', JSON.stringify(json))
+        } catch (err) {
+        }
+    },
+    fetchEvents: (name: string) => async (dispatch: AppDispatch) => {
+        try {
+            const events = localStorage.getItem('events') || '[]'
+            const json = JSON.parse(events) as EventType[]
+            const currentUserEvents = json.filter(e => e.guest === name || e.author === name)
+            dispatch(EventActionCreators.setEvents(currentUserEvents))
+        } catch (err) {
+        }
+    },
 }

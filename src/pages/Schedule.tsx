@@ -4,19 +4,30 @@ import {Button, Layout, Modal, Row} from "antd";
 import {EventForm} from "../components/EventForm";
 import {useActions} from "../hooks/useActions";
 import {useTypedSelector} from "../hooks/useTypedSelector";
+import {EventType} from "../store/reducers/event/actions";
 
 export const Schedule: FC = () => {
+    const {guests, events} = useTypedSelector(state => state.event)
+    const {login} = useTypedSelector(state => state.auth.user)
+
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const {fetchGuests} = useActions()
-    const {guests} = useTypedSelector(state => state.event)
+
+    const {fetchGuests, createEvent, fetchEvents} = useActions()
+
     useEffect(() => {
         fetchGuests()
+        fetchEvents(login)
     }, [])
+
+    const addNewEvent = (event: EventType) => {
+        setIsModalOpen(false)
+        createEvent({...event, author: login})
+    }
+
     return (
         <Layout>
             <EventCalendar
-                // @ts-ignore
-                events={[]}/>
+                events={events}/>
             <Row justify='center'>
                 <Button onClick={() => setIsModalOpen(true)}>
                     Add event
@@ -28,7 +39,9 @@ export const Schedule: FC = () => {
                 footer={null}
                 onCancel={() => setIsModalOpen(false)}
             >
-                <EventForm guests={guests}/>
+                <EventForm guests={guests}
+                           submit={(event) => addNewEvent(event)}
+                />
             </Modal>
         </Layout>
 

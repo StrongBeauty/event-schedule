@@ -1,6 +1,6 @@
 import {UserType} from "../auth/actions";
-import {ActionsType} from "./actions";
-import {EventType} from "@testing-library/react";
+import {ActionsType, EventType} from "./actions";
+
 
 type InitialStateType = typeof initialState
 
@@ -18,6 +18,6 @@ export default function EventReducer(state: InitialStateType = initialState, act
             return {...state, guests: action.payload}
         }
         default:
-            return initialState
+            return state
     }
 }

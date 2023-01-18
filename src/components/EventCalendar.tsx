@@ -1,15 +1,28 @@
-import {Calendar} from "antd";
+import {Badge, Calendar} from "antd";
 import {FC} from "react";
+import {EventType} from "../store/reducers/event/actions";
 
-type EventType = {
-    author: string;
-    guest: string;
-    date: string;
-    description: string;
+type EventCalendarPropsType = {
+    events: EventType[]
 }
 
-export const EventCalendar: FC = () => {
+export const EventCalendar: FC<EventCalendarPropsType> = ({events}) => {
+
+    function dateCellRender (val: any) {
+        const value = `${val.date}.${val.month}.${val.year}`
+        const currentDayEvents = events.filter(e => e.date === value)
+        return (
+            <ul className='events'>
+                {currentDayEvents.map((e, index) => (
+                    <li key={index + e.description + e.guest}>
+                        <Badge text={e.description}/>
+                    </li>
+                    ))}
+            </ul>
+        )
+    }
+
     return (
-        <Calendar/>
+        <Calendar dateCellRender={dateCellRender}/>
     )
 }
